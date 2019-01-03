@@ -34,7 +34,7 @@ for PYBIN in "${PYBINARIES[@]}"; do
     # Install dependencies
     ${PYBIN}/pip install --upgrade -r /work/requirements-dev.txt
 
-    build_type=MinSizeRel
+    build_type=Release
     source_path=/work/standalone-${ARCH}-build/VTK-source
     build_path=/work/VTK-$(basename $(dirname ${PYBIN}))-manylinux1_${ARCH}
 
