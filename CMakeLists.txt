@@ -96,9 +96,13 @@ if(VTKPythonPackage_SUPERBUILD)
   #-----------------------------------------------------------------------------
   include(ExternalProject)
 
-  set(VTK_REPOSITORY "https://gitlab.kitware.com/demarle/VTK.git")
+  # DDM the following changed to get my vtkpython-less branch
+  #set(VTK_REPOSITORY "https://github.com/kitware/VTK.git")
+  set(VTK_REPOSITORY "https://gitlab.kitware.com/demarle/vtk.git")
   # VTK nightly-master 2018-05-14
-  set(VTK_GIT_TAG "origin/break-wrappings-vtkpythoninterpreter-dependency")
+  #set(VTK_GIT_TAG "release")
+  # DDM the following changed to get my vtkpython-less branch
+  set(VTK_GIT_TAG "break-wrappings-vtkpythoninterpreter-dependency")
 
   #-----------------------------------------------------------------------------
   # A separate project is used to download VTK, so that it can reused
@@ -220,6 +224,7 @@ if(VTKPythonPackage_SUPERBUILD)
       -DVTK_USE_PARALLEL:BOOL=ON
       -DVTK_DEBUG_LEAKS:BOOL=OFF
       -DVTK_LEGACY_REMOVE:BOOL=ON
+      # DDM following doesn't make a differnce either way
       -DVTK_ENABLE_KITS:BOOL=ON
 
       # Python options
@@ -232,10 +237,14 @@ if(VTKPythonPackage_SUPERBUILD)
 
       # Install options
       -DCMAKE_INSTALL_PREFIX:PATH=${CMAKE_INSTALL_PREFIX}
-      -DVTK_INSTALL_PYTHON_MODULES_DIR:STRING=${CMAKE_INSTALL_PREFIX}
-      -DVTK_INSTALL_RUNTIME_DIR:PATH=${install_dir}
-      -DVTK_INSTALL_LIBRARY_DIR:PATH=${install_dir}
-      -DVTK_INSTALL_ARCHIVE_DIR:PATH=${install_dir}
+      # DDM following added so that auditwheel can find .so's
+      -DVTK_INSTALL_PYTHON_MODULES_DIR:STRING=${install_dir}
+      # DDM following added so that auditwheel can find .so's
+      -DVTK_PYTHON_SITE_PACKAGES_SUFFIX:STRING=
+      # DDM following three switched so that auditwheel can find .so's
+      -DVTK_INSTALL_RUNTIME_DIR:PATH=${install_dir}/vtkmodules
+      -DVTK_INSTALL_LIBRARY_DIR:PATH=${install_dir}/vtkmodules
+      -DVTK_INSTALL_ARCHIVE_DIR:PATH=${install_dir}/vtkmodules
       -DVTK_INSTALL_NO_DEVELOPMENT:BOOL=ON
 
       # Rendering options

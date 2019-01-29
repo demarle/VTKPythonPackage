@@ -8,7 +8,8 @@ PYBINARIES=""
 PYTHON_LIBRARY=""
 
 script_dir=$(cd $(dirname $0) || exit 1; pwd)
-source "${script_dir}/manylinux-build-common.sh"
+# DDM 35m added to make it just try and build one to save my debugging time
+source "${script_dir}/manylinux-build-common.sh" 35m
 # -----------------------------------------------------------------------
 
 # VTK requirements
@@ -54,7 +55,8 @@ for PYBIN in "${PYBINARIES[@]}"; do
           -DPYTHON_INCLUDE_DIR:PATH=${PYTHON_INCLUDE_DIR} \
           -DPYTHON_LIBRARY:FILEPATH=${PYTHON_LIBRARY}
     # Cleanup
-    ${PYBIN}/python setup.py clean
+    # DDM the following is commented out to leave evidence of what happened so I can debug
+    #${PYBIN}/python setup.py clean
 
     # Remove unnecessary files for building against VTK
     find ${build_path} -name '*.o' -delete
